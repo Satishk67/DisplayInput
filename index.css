@@ -79,3 +79,16 @@ img{
     padding: 15px;
     font-size: x-large;
 }
+
+#imageResult{
+    margin: 20px auto;
+}
+
+.resultImage{
+    margin: 20px auto;
+    height: 300px;
+    width: 400px;
+    object-fit: fill;
+    border: 2px solid black;
+    
+}

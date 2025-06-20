@@ -22,7 +22,7 @@ proceed_btn.addEventListener('click', () => {
 function handle_search() {
     const anything = inputs[2].value.trim();
     if (anything) {
-        output2.textContent = `Your Input: ${anything} `;
+        output2.textContent = `Result for: ${anything} `;
     } 
     else {
         output2.textContent = "Please type something.";
@@ -30,11 +30,39 @@ function handle_search() {
 }
 
 // ➤ search-btn
-search_btn.addEventListener('click', handle_search);
-inputs[2].addEventListener('keydown',(event)=>{
-    if(event.key == 'Enter'){
-        event.preventDefault();
+search_btn.addEventListener('click', function(){
+    handle_search();
+    searchImage();
+});
+inputs[2].addEventListener('keydown',(e)=>{
+    if(e.key === "Enter"){
+        e.preventDefault();
+        // above one is optional
         handle_search();
+        searchImage();
     }
 
 });
+
+async function searchImage() {
+    const accessKey = "xrmKAvQqWc-jfAoRUf2fP7GTAFqvO-C5yZFGEPUxC-A";
+    const input = inputs[2].value.trim();
+
+    const url = `https://api.unsplash.com/photos/random?query=${encodeURIComponent(input)}&client_id=${accessKey}`;
+
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if (data && data.urls && data.urls.regular) {
+          document.getElementById('imageResult').innerHTML = `
+            <img src="${data.urls.regular}" alt="${input}" class="resultImage"/>
+          `;
+        } else {
+          document.getElementById('imageResult').innerHTML = `<p>No image found.</p>`;
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        document.getElementById('imageResult').innerHTML = `<p>Failed to fetch image.</p>`;
+      }
+    }
